@@ -1,11 +1,18 @@
 import { ItemAcervo } from "./model/ItemAcervo";
+import { JogoEletronico } from "./model/JogoEletronico";
+import { Livro } from "./model/Livro";
 
-const domCasmurro = new ItemAcervo("Dom Casmurro", 1899);
-const vidasSecas = new ItemAcervo("Vidas Secas", 1938);
-const cortico = new ItemAcervo("O Cortiço", 1890);
-const minecraft = new ItemAcervo("Minecraft", 2011);
+const domCasmurro = new Livro("Dom Casmurro", 1899, "Machado de Assis");
+const vidasSecas = new Livro("Vidas Secas", 1938, "Graciliano Ramos");
+const cortico = new Livro("O Cortiço", 1890, "Aluísio Azevedo");
+const minecraft = new JogoEletronico("Minecraft", 2011, "PC");
+const stardewValley = new JogoEletronico("Stardew Valley", 2016, "Nintendo Switch");
 
-const acervo: ItemAcervo[] = [domCasmurro, vidasSecas, cortico, minecraft];
+const acervo: ItemAcervo[] = [domCasmurro, vidasSecas, cortico, minecraft, stardewValley];
+
+function formatarMoeda(valor: number): string {
+    return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
 
 function exibirAcervo(): void {
     console.log("\n=== Itens do acervo ===");
@@ -27,20 +34,24 @@ function realizarOperacao(descricao: string, operacao: () => void): void {
 }
 
 console.log(`Total de itens cadastrados: ${ItemAcervo.totalCadastrado}`);
-console.log(`Títulos: ${acervo.map((item) => item.titulo).join(", ")}`);
 
 exibirAcervo();
 
 console.log("\n=== Operações ===");
 realizarOperacao("Emprestar Dom Casmurro", () => domCasmurro.emprestar());
 realizarOperacao("Emprestar Dom Casmurro de novo", () => domCasmurro.emprestar());
-realizarOperacao("Emprestar O Cortiço", () => cortico.emprestar());
+realizarOperacao("Emprestar Minecraft", () => minecraft.emprestar());
 realizarOperacao("Devolver Vidas Secas", () => vidasSecas.devolver());
 
 exibirAcervo();
 
-console.log(`\nStatus de "${domCasmurro.titulo}": ${domCasmurro.statusDisponibilidade}`);
+const diasAtraso = 3;
+console.log(`\n=== Multa por ${diasAtraso} dias de atraso ===`);
+acervo.forEach((item) => {
+    console.log(`${item.titulo}: ${formatarMoeda(item.calcularMulta(diasAtraso))}`);
+});
 
-// Não compilam, pois o estado está protegido:
+// Não compilam:
+// new ItemAcervo("Teste", 2000);  -> classe abstrata não pode ser instanciada
 // domCasmurro.id = 99;            -> id só tem get (somente leitura)
 // domCasmurro._disponivel = true; -> atributo privado

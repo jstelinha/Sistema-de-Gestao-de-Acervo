@@ -12,6 +12,7 @@
 
     /* Modo estrito: ativa todas as verificações rígidas de tipo */
     "strict": true,
+    "noImplicitOverride": true,
 
     /* Outras opções */
     "types": ["node"],

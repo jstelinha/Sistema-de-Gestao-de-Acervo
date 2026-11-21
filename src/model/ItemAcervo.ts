@@ -1,4 +1,4 @@
-export class ItemAcervo {
+export abstract class ItemAcervo {
     private static _contadorId: number = 0;
 
     private readonly _id: number;
@@ -34,6 +34,8 @@ export class ItemAcervo {
     get statusDisponibilidade(): string {
         return this._disponivel ? "Disponível" : "Emprestado";
     }
+
+    abstract calcularMulta(diasAtraso: number): number;
 
     emprestar(): void {
         if (!this._disponivel) {
