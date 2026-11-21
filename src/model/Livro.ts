@@ -1,3 +1,4 @@
+import { OperacaoInvalidaError } from "../erros/OperacaoInvalidaError";
 import { Reservavel } from "../interfaces/Reservavel";
 import { ItemAcervo } from "./ItemAcervo";
 
@@ -24,17 +25,17 @@ export class Livro extends ItemAcervo implements Reservavel {
 
     reservar(nomeUsuario: string): void {
         if (nomeUsuario.trim() === "") {
-            throw new Error("O nome do usuário é obrigatório para reservar.");
+            throw new OperacaoInvalidaError("O nome do usuário é obrigatório para reservar.");
         }
         if (this._reservadoPor !== null) {
-            throw new Error(`O livro "${this.titulo}" já está reservado para ${this._reservadoPor}.`);
+            throw new OperacaoInvalidaError(`O livro "${this.titulo}" já está reservado para ${this._reservadoPor}.`);
         }
         this._reservadoPor = nomeUsuario;
     }
 
     cancelarReserva(): void {
         if (this._reservadoPor === null) {
-            throw new Error(`O livro "${this.titulo}" não possui reserva.`);
+            throw new OperacaoInvalidaError(`O livro "${this.titulo}" não possui reserva.`);
         }
         this._reservadoPor = null;
     }

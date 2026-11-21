@@ -1,3 +1,9 @@
+import { OperacaoInvalidaError } from "../erros/OperacaoInvalidaError";
+
+export type StatusDisponibilidade = "Disponível" | "Emprestado";
+
+export type DadosAtualizacao = Partial<Pick<ItemAcervo, "titulo" | "anoPublicacao">>;
+
 export abstract class ItemAcervo {
     private static _contadorId: number = 0;
 
@@ -31,7 +37,7 @@ export abstract class ItemAcervo {
         return this._disponivel;
     }
 
-    get statusDisponibilidade(): string {
+    get statusDisponibilidade(): StatusDisponibilidade {
         return this._disponivel ? "Disponível" : "Emprestado";
     }
 
@@ -39,16 +45,24 @@ export abstract class ItemAcervo {
 
     emprestar(): void {
         if (!this._disponivel) {
-            throw new Error(`O item "${this._titulo}" já está emprestado.`);
+            throw new OperacaoInvalidaError(`O item "${this._titulo}" já está emprestado.`);
         }
         this._disponivel = false;
     }
 
     devolver(): void {
         if (this._disponivel) {
-            throw new Error(`O item "${this._titulo}" não está emprestado.`);
+            throw new OperacaoInvalidaError(`O item "${this._titulo}" não está emprestado.`);
         }
         this._disponivel = true;
+    }
+
+    atualizar(dados: DadosAtualizacao): void {
+        if (dados.titulo !== undefined && dados.titulo.trim() === "") {
+            throw new OperacaoInvalidaError("O título não pode ficar vazio.");
+        }
+        this._titulo = dados.titulo ?? this._titulo;
+        this._anoPublicacao = dados.anoPublicacao ?? this._anoPublicacao;
     }
 
     descrever(): string {
