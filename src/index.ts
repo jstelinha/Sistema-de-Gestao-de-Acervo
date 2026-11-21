@@ -1,29 +1,41 @@
 import { ItemAcervo } from "./model/ItemAcervo";
 
-// Coleção do acervo: um array de objetos ItemAcervo
-const acervo: ItemAcervo[] = [];
+const domCasmurro = new ItemAcervo(1, "Dom Casmurro", 1899);
+const vidasSecas = new ItemAcervo(2, "Vidas Secas", 1938);
+const cortico = new ItemAcervo(3, "O Cortiço", 1890);
+const minecraft = new ItemAcervo(4, "Minecraft", 2011);
 
-acervo.push(new ItemAcervo(1, "Dom Casmurro", 1899));
-acervo.push(new ItemAcervo(2, "Vidas Secas", 1938));
-acervo.push(new ItemAcervo(3, "O Cortiço", 1890, false));
-acervo.push(new ItemAcervo(4, "Minecraft", 2011));
+const acervo: ItemAcervo[] = [domCasmurro, vidasSecas, cortico, minecraft];
 
-console.log("=== Itens do acervo ===");
-acervo.forEach((item) => console.log(item.descrever()));
+function exibirAcervo(): void {
+    console.log("\n=== Itens do acervo ===");
+    acervo.forEach((item) => console.log(item.descrever()));
 
-// filter: retorna um novo array só com os itens que passam no teste
-const disponiveis: ItemAcervo[] = acervo.filter((item) => item.disponivel);
-console.log(`\nItens disponíveis: ${disponiveis.length} de ${acervo.length}`);
-
-// map: transforma cada objeto em outro valor (aqui, só o título)
-const titulos: string[] = acervo.map((item) => item.titulo);
-console.log(`Títulos cadastrados: ${titulos.join(", ")}`);
-
-// find: retorna o primeiro item encontrado ou undefined
-const itemBuscado: ItemAcervo | undefined = acervo.find((item) => item.id === 2);
-
-if (itemBuscado) {
-    console.log(`\nItem encontrado pelo id 2: ${itemBuscado.descrever()}`);
-} else {
-    console.log("\nNenhum item encontrado com o id 2.");
+    const disponiveis = acervo.filter((item) => item.estaDisponivel());
+    console.log(`Disponíveis: ${disponiveis.length} de ${acervo.length}`);
 }
+
+function realizarOperacao(descricao: string, operacao: () => void): void {
+    try {
+        operacao();
+        console.log(`${descricao}: sucesso`);
+    } catch (erro) {
+        if (erro instanceof Error) {
+            console.log(`${descricao}: falhou - ${erro.message}`);
+        }
+    }
+}
+
+exibirAcervo();
+
+console.log("\n=== Operações ===");
+realizarOperacao("Emprestar Dom Casmurro", () => domCasmurro.emprestar());
+realizarOperacao("Emprestar Dom Casmurro de novo", () => domCasmurro.emprestar());
+realizarOperacao("Emprestar O Cortiço", () => cortico.emprestar());
+realizarOperacao("Devolver Vidas Secas", () => vidasSecas.devolver());
+
+exibirAcervo();
+
+// Não compilam, pois o estado está protegido:
+// domCasmurro.id = 99;            -> id é readonly
+// domCasmurro._disponivel = true; -> atributo privado
