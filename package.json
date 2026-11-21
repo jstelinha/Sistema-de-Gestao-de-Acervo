@@ -1,0 +1,18 @@
+{
+  "name": "sistema-de-gestao-de-acervo",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão de Acervo desenvolvido em TypeScript com Programação Orientada a Objetos",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9"
+  }
+}

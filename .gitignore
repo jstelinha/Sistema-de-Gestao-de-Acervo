@@ -1,0 +1,5 @@
+node_modules/
+
+# Arquivos gerados pelo tsc (a pasta dist/ é mantida no repositório pelo .gitkeep)
+dist/*
+!dist/.gitkeep

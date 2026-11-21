@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    /* Versão do JavaScript gerado e sistema de módulos */
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    /* Pastas de código-fonte (TypeScript) e de saída (JavaScript compilado) */
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    /* Modo estrito: ativa todas as verificações rígidas de tipo */
+    "strict": true,
+
+    /* Outras opções */
+    "types": ["node"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}
